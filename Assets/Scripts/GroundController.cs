@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class GroundController : MonoBehaviour {
     // Config
@@ -11,9 +12,18 @@ public class GroundController : MonoBehaviour {
     // References
     public Rigidbody body;
 
+    public InputAction horizontal;
+
+    public InputAction vertical;
+
+    void OnEnable() {
+        horizontal.Enable();
+        vertical.Enable();
+    }
+
     void FixedUpdate() {
-        float rotXTarget = Input.GetAxis("Vertical");
-        float rotZTarget = -Input.GetAxis("Horizontal");
+        float rotXTarget = vertical.ReadValue<float>();
+        float rotZTarget = -horizontal.ReadValue<float>();
 
         if (rotXTarget > 0) body.AddTorque(new Vector3(rotationSpeed, 0, 0), ForceMode.Acceleration);
         if (rotXTarget < 0) body.AddTorque(new Vector3(-rotationSpeed, 0, 0), ForceMode.Acceleration);
